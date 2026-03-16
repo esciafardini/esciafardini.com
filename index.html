@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>myvim</title>
+  <style>
+    :root {
+      --bg: #1F1F28;
+      --surface: #2A2A37;
+      --sidebar: #16161D;
+      --text: #DCD7BA;
+      --heading: #7E9CD8;
+      --link: #7AA89F;
+      --accent: #957FB8;
+      --kbd-bg: #363646;
+      --kbd-border: #54546D;
+      --code-bg: #1a1a22;
+      --code-accent: #7E9CD8;
+      --card-bg: #2A2A37;
+      --card-border: #363646;
+      --muted: #727169;
+      --string: #98BB6C;
+      --warning: #E6C384;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 220px;
+      height: 100vh;
+      background: var(--sidebar);
+      border-right: 1px solid var(--card-border);
+      padding: 2rem 1rem;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar .subtitle {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .sidebar nav a {
+      display: block;
+      color: var(--link);
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      transition: background 0.15s;
+    }
+
+    .sidebar nav a:hover {
+      background: var(--surface);
+    }
+
+    .sidebar nav .section-label {
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 1.2rem;
+      margin-bottom: 0.3rem;
+      padding-left: 0.5rem;
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 220px;
+      max-width: 900px;
+      padding: 3rem 3rem 6rem;
+    }
+
+    h2 {
+      color: var(--heading);
+      font-size: 1.4rem;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    h3 {
+      color: var(--accent);
+      font-size: 1rem;
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    p { margin-bottom: 0.8rem; }
+
+    a { color: var(--link); }
+
+    /* Keyboard keys */
+    kbd {
+      display: inline-block;
+      background: var(--kbd-bg);
+      border: 1px solid var(--kbd-border);
+      border-radius: 4px;
+      padding: 0.1em 0.45em;
+      font-size: 0.85em;
+      font-family: inherit;
+      box-shadow: 0 2px 0 var(--kbd-border);
+      vertical-align: baseline;
+      line-height: 1.4;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid #2a2a30;
+    }
+
+    tr:hover td {
+      background: rgba(122, 168, 159, 0.04);
+    }
+
+    /* Code blocks */
+    pre {
+      background: var(--code-bg);
+      border-left: 3px solid var(--code-accent);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: inherit;
+      color: var(--string);
+      font-size: 0.9em;
+    }
+
+    pre code { color: var(--text); }
+
+    /* Plugin cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 1rem;
+    }
+
+    .card .card-name {
+      color: var(--heading);
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .card .card-desc {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .card .card-note {
+      color: var(--warning);
+      font-size: 0.75rem;
+      margin-top: 0.4rem;
+    }
+
+    /* GIF placeholders */
+    .gif-demo {
+      background: var(--code-bg);
+      border: 1px dashed var(--card-border);
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin: 1rem 0;
+    }
+
+    .gif-demo img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+
+    /* Category label */
+    .category {
+      display: inline-block;
+      background: var(--kbd-bg);
+      color: var(--accent);
+      font-size: 0.7rem;
+      padding: 0.15em 0.6em;
+      border-radius: 3px;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* LSP table language col */
+    .lang { color: var(--warning); }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--card-border);
+        padding: 1rem;
+      }
+      .sidebar nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+      .sidebar nav .section-label { width: 100%; margin-top: 0.5rem; }
+      .main { margin-left: 0; padding: 1.5rem; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <h1>myvim</h1>
+  <p class="subtitle">neovim reference &amp; config docs</p>
+  <nav>
+    <div class="section-label">Vim Tips</div>
+    <a href="#leader-keys">Leader Keys</a>
+    <a href="#local-leader">Local Leader</a>
+    <a href="#navigation">Navigation</a>
+    <a href="#fzf">Fuzzy Finder</a>
+    <a href="#git">Git</a>
+    <a href="#completion">Completion</a>
+    <a href="#multicursor">Multicursor</a>
+    <a href="#lsp-keys">LSP Keybinds</a>
+    <a href="#folds">Folds</a>
+    <a href="#repl">REPL (Conjure)</a>
+    <a href="#surround">Surround</a>
+    <a href="#obsidian">Obsidian</a>
+    <div class="section-label">My Config</div>
+    <a href="#config-structure">Structure</a>
+    <a href="#core-files">Core Files</a>
+    <a href="#plugins">Plugins</a>
+    <a href="#lsp-servers">LSP Servers</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <!-- =========================================== -->
+  <!--  VIM TIPS                                    -->
+  <!-- =========================================== -->
+
+  <h2 id="vim-tips">Vim Tips</h2>
+
+  <!-- Leader Keys -->
+  <h3 id="leader-keys">Leader Key <kbd>Space</kbd></h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>h</kbd></td><td>Clear search highlight</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>r</kbd></td><td>Toggle relative line numbers</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>S</kbd></td><td>Toggle spellcheck</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>s</kbd> <kbd>r</kbd></td><td>Search and replace (<code>:%s/</code>)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>e</kbd></td><td>File explorer (Neo-tree float)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>?</kbd></td><td>Buffer-local keymaps (which-key)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>a</kbd> <kbd>c</kbd></td><td>Open nvim config dir</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>a</kbd> <kbd>h</kbd></td><td>Previous arg</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>a</kbd> <kbd>l</kbd></td><td>Next arg</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>a</kbd> <kbd>r</kbd></td><td>Old files (recent)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>s</kbd> <kbd>n</kbd></td><td>Get treesitter node type</td></tr>
+  </table>
+
+  <!-- Local Leader -->
+  <h3 id="local-leader">Local Leader <kbd>,</kbd></h3>
+  <p>Paredit wraps (Lisp filetypes: clojure, fennel, scheme, lisp). In non-Lisp files, these wrap the treesitter node under cursor via mini.surround.</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>,</kbd> <kbd>w</kbd></td><td>Wrap element in <code>()</code> and enter insert mode</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>)</kbd></td><td>Wrap element in <code>()</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>[</kbd></td><td>Wrap element in <code>[]</code> and enter insert mode (Lisp) / wrap node (other)</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>]</kbd></td><td>Wrap element in <code>[]</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>{</kbd></td><td>Wrap element in <code>{}</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>}</kbd></td><td>Wrap element in <code>{}</code></td></tr>
+  </table>
+
+  <p>Surround shortcuts (mini.surround):</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>s</kbd> <kbd>a</kbd></td><td>Add surround</td></tr>
+    <tr><td><kbd>d</kbd> <kbd>s</kbd></td><td>Delete surround</td></tr>
+    <tr><td><kbd>c</kbd> <kbd>s</kbd></td><td>Change surround</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>'</kbd></td><td>Surround word with <code>'</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>"</kbd></td><td>Surround word with <code>"</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>`</kbd></td><td>Surround word with <code>`</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>s</kbd> <kbd>'</kbd></td><td>Surround sentence with <code>'</code></td></tr>
+    <tr><td><kbd>,</kbd> <kbd>s</kbd> <kbd>"</kbd></td><td>Surround sentence with <code>"</code></td></tr>
+    <tr><td><kbd>S</kbd> (visual)</td><td>Surround visual selection</td></tr>
+  </table>
+
+  <p>Paredit navigation (Lisp filetypes):</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>(</kbd></td><td>Jump to parent form start</td></tr>
+    <tr><td><kbd>)</kbd></td><td>Jump to parent form end</td></tr>
+  </table>
+
+  <p>Clojure-specific logging (paredit):</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>s</kbd></td><td>Wrap element in <code>log/spy</code></td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>d</kbd></td><td>Wrap element in <code>log/daff</code></td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>S</kbd></td><td>Clean all log/spy &amp; log/daff from buffer</td></tr>
+  </table>
+
+  <!-- Navigation -->
+  <h3 id="navigation">Navigation</h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Shift</kbd>+<kbd>H</kbd></td><td>Previous buffer</td></tr>
+    <tr><td><kbd>Shift</kbd>+<kbd>L</kbd></td><td>Next buffer</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>b</kbd></td><td>Half-scroll up</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>f</kbd></td><td>Half-scroll down</td></tr>
+    <tr><td><kbd>V</kbd> then <kbd>J</kbd></td><td>Move visual block down</td></tr>
+    <tr><td><kbd>V</kbd> then <kbd>K</kbd></td><td>Move visual block up</td></tr>
+    <tr><td><kbd>c</kbd> <kbd>(</kbd></td><td>Change inside next parens</td></tr>
+  </table>
+
+  <div class="gif-demo">
+    <img src="gifs/buffer-nav.gif" alt="Buffer navigation demo"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span style="display:none">Run <code>vhs tapes/buffer-nav.tape</code> to generate this GIF</span>
+  </div>
+
+  <p>Buffer management (lualine):</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>b</kbd> <kbd>h</kbd></td><td>Close buffers to the left</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>b</kbd> <kbd>l</kbd></td><td>Close buffers to the right</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>b</kbd> <kbd>o</kbd></td><td>Close all other buffers</td></tr>
+  </table>
+
+  <!-- FZF -->
+  <h3 id="fzf">Fuzzy Finder (fzf-lua)</h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>f</kbd> <kbd>f</kbd></td><td>Find files</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>f</kbd> <kbd>w</kbd></td><td>Live grep (find words)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>f</kbd> <kbd>b</kbd></td><td>Find buffers</td></tr>
+  </table>
+  <p>Inside fzf: <kbd>Ctrl</kbd>+<kbd>j</kbd> / <kbd>Ctrl</kbd>+<kbd>k</kbd> to navigate results. Cycling enabled.</p>
+
+  <div class="gif-demo">
+    <img src="gifs/fzf-files.gif" alt="FZF file finder demo"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span style="display:none">Run <code>vhs tapes/fzf-files.tape</code> to generate this GIF</span>
+  </div>
+
+  <!-- Git -->
+  <h3 id="git">Git</h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>g</kbd></td><td>LazyGit</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>b</kbd></td><td>Blame line</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>B</kbd></td><td>Toggle full blame</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>p</kbd></td><td>Preview hunk inline</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>n</kbd></td><td>Next hunk</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>s</kbd></td><td>Stage/unstage hunk at cursor</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>r</kbd></td><td>Reset hunk</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>S</kbd></td><td>Stage entire buffer</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>R</kbd></td><td>Reset buffer index</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>g</kbd> <kbd>f</kbd></td><td>Refresh gitsigns</td></tr>
+  </table>
+  <p>Gitsigns shows <code>|</code> for unstaged, <code>&#10003;</code> for staged, <code>&#10007;</code> for deletes. Unstaged = red, staged = green.</p>
+
+  <!-- Completion -->
+  <h3 id="completion">Completion (blink.cmp)</h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Tab</kbd></td><td>Snippet forward / select next / fallback</td></tr>
+    <tr><td><kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>Snippet backward / select prev / fallback</td></tr>
+    <tr><td><kbd>Enter</kbd></td><td>Accept completion / fallback</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>k</kbd></td><td>Fallback (keeps digraphs available)</td></tr>
+  </table>
+  <p>Sources: buffer, LSP (min 3 chars), path, snippets, lazydev. Trigger on trigger chars only (no auto-popup on typing). Function signature help enabled.</p>
+
+  <!-- Multicursor -->
+  <h3 id="multicursor">Multicursor</h3>
+  <p>Visual block workflow with <a href="https://github.com/jake-stewart/multicursor.nvim">multicursor.nvim</a>:</p>
+  <ol style="margin-left:1.5rem; margin-bottom:1rem;">
+    <li><kbd>Ctrl</kbd>+<kbd>v</kbd> to enter visual block mode</li>
+    <li>Select the column of text</li>
+    <li><kbd>I</kbd> to insert at start / <kbd>A</kbd> to append at end</li>
+    <li>Type your edit &mdash; all cursors update simultaneously</li>
+    <li><kbd>Esc</kbd> to clear cursors</li>
+  </ol>
+
+  <div class="gif-demo">
+    <img src="gifs/multicursor.gif" alt="Multicursor demo"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span style="display:none">Run <code>vhs tapes/multicursor.tape</code> to generate this GIF</span>
+  </div>
+
+  <!-- LSP Keybinds -->
+  <h3 id="lsp-keys">LSP Keybinds</h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>g</kbd> <kbd>d</kbd></td><td>Go to definition</td></tr>
+    <tr><td><kbd>g</kbd> <kbd>r</kbd></td><td>Go to references</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>a</kbd></td><td>Code actions (normal &amp; visual)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>r</kbd></td><td>Rename symbol</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>f</kbd></td><td>Format current form (treesitter-aware)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>F</kbd></td><td>Format entire file</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>l</kbd> <kbd>f</kbd> (SQL)</td><td>Format SQL with <code>pg_format</code></td></tr>
+  </table>
+
+  <!-- Folds -->
+  <h3 id="folds">Folds</h3>
+  <p>Folds are auto-saved and restored per buffer.</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>z</kbd> <kbd>a</kbd></td><td>Toggle fold under cursor</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>A</kbd></td><td>Toggle fold (all levels)</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>M</kbd></td><td>Close ALL folds in buffer</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>R</kbd></td><td>Open ALL folds in buffer</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>j</kbd></td><td>Jump to next fold</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>k</kbd></td><td>Jump to prev fold</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>n</kbd></td><td>Disable folding</td></tr>
+    <tr><td><kbd>z</kbd> <kbd>N</kbd></td><td>Enable folding</td></tr>
+  </table>
+
+  <!-- REPL -->
+  <h3 id="repl">REPL (Conjure)</h3>
+  <p>Conjure provides REPL integration for Clojure, Fennel, Python, Lua, and SQL. Auto-repl is disabled &mdash; connect manually.</p>
+
+  <p><strong>Conjure defaults</strong> (local leader <kbd>,</kbd>):</p>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>,</kbd> <kbd>k</kbd></td><td>Doc lookup for word under cursor</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>e</kbd> <kbd>e</kbd></td><td>Eval current form</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>e</kbd> <kbd>r</kbd></td><td>Eval root form</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>e</kbd> <kbd>b</kbd></td><td>Eval buffer</td></tr>
+    <tr><td><kbd>,</kbd> <kbd>l</kbd> <kbd>v</kbd></td><td>Toggle log window</td></tr>
+  </table>
+
+  <p><strong>Clojure nREPL connections:</strong></p>
+  <table>
+    <tr><th>Key</th><th>Connection</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>s</kbd></td><td>Service (port 7000)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>j</kbd></td><td>Jobs (port 7001)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>a</kbd></td><td>Alerter (port 7002)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>S</kbd></td><td>Shadow CLJS App (port 7888)</td></tr>
+  </table>
+
+  <p><strong>SQL connections</strong> (via psql, in <code>.sql</code> files):</p>
+  <table>
+    <tr><th>Key</th><th>Database</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>p</kbd> <kbd>l</kbd></td><td>Local</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>p</kbd> <kbd>s</kbd></td><td>Staging</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>p</kbd> <kbd>p</kbd></td><td>Prod</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>p</kbd> <kbd>d</kbd></td><td>Coin Dolphin (local)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>p</kbd> <kbd>g</kbd></td><td>Grider Tutorial (local)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>c</kbd> <kbd>p</kbd> <kbd>a</kbd></td><td>Art of Postgres</td></tr>
+  </table>
+
+  <!-- Surround -->
+  <h3 id="surround">Surround (mini.surround)</h3>
+  <p>Core operations: <kbd>s</kbd><kbd>a</kbd> (add), <kbd>d</kbd><kbd>s</kbd> (delete), <kbd>c</kbd><kbd>s</kbd> (change). In visual mode, <kbd>S</kbd> to surround selection.</p>
+  <p>For Lisp filetypes, paredit handles wrapping. For all other filetypes, <kbd>,</kbd><kbd>w</kbd> and friends wrap the treesitter node under the cursor.</p>
+
+  <!-- Obsidian -->
+  <h3 id="obsidian">Obsidian</h3>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Space</kbd> <kbd>o</kbd> <kbd>f</kbd></td><td>Find note (quick switch)</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>o</kbd> <kbd>s</kbd></td><td>Search vault</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>o</kbd> <kbd>n</kbd></td><td>New note</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>o</kbd> <kbd>b</kbd></td><td>Backlinks</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>o</kbd> <kbd>t</kbd></td><td>Today's note</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>o</kbd> <kbd>y</kbd></td><td>Yesterday's note</td></tr>
+    <tr><td><kbd>Space</kbd> <kbd>y</kbd> <kbd>o</kbd> (visual)</td><td>Yank as displayed (checkboxes rendered)</td></tr>
+  </table>
+  <p>Obsidian vault files: no swapfile, auto-reload, conceal in normal/visual mode, indent-based folds.</p>
+
+  <!-- =========================================== -->
+  <!--  MY CONFIG                                   -->
+  <!-- =========================================== -->
+
+  <h2 id="my-config">My Config</h2>
+
+  <!-- Config Structure -->
+  <h3 id="config-structure">Config Structure</h3>
+  <pre><code>~/.config/nvim/
+  init.lua                  # Entry point: loads options, lsp, lazyconfig
+  lua/
+    options.lua             # Settings, keymaps, autocmds
+    lsp.lua                 # LSP attach keybinds + server configs
+    lazyconfig.lua          # Bootstraps lazy.nvim plugin manager
+    whitespace.lua          # Custom whitespace module
+    plugins/
+      colorscheme.lua       # Kanagawa theme (customized palette)
+      completions.lua       # blink.cmp + LuaSnip + lazydev
+      conjure.lua           # REPL connections (Clojure, SQL)
+      csv.lua               # CSV highlighting (custom plugin)
+      fzf-lua.lua           # Fuzzy finder
+      git.lua               # LazyGit + gitsigns
+      hex.lua               # Hex editor
+      lualine.lua           # Statusline + buffer tabs
+      multicursor.lua       # Visual block multicursor
+      neotree.lua           # File explorer (float)
+      notify.lua            # nvim-notify
+      obsidian.lua          # Obsidian vault integration
+      paredit.lua           # Structural editing (Lisp)
+      surround.lua          # mini.surround + node wrapping
+      treesitter.lua        # Treesitter + textobjects
+      whichkey.lua          # Keybinding hints</code></pre>
+
+  <!-- Core Files -->
+  <h3 id="core-files">Core Files</h3>
+
+  <p><strong>init.lua</strong> &mdash; Three lines. Loads <code>options</code>, <code>lsp</code>, and <code>lazyconfig</code> in order.</p>
+
+  <p><strong>options.lua</strong> &mdash; Global settings and keymaps.</p>
+  <ul style="margin-left:1.5rem; margin-bottom:1rem;">
+    <li>Leader: <kbd>Space</kbd>, Local Leader: <kbd>,</kbd></li>
+    <li>System clipboard (<code>unnamedplus</code>), relative line numbers, 2-space indentation</li>
+    <li>Smart case search, split below/right, persistent undo</li>
+    <li>Auto-pairs for <code>(</code> <code>[</code> <code>{</code> in all filetypes</li>
+    <li>Yank highlight (purple bg, green fg, 1s)</li>
+    <li>Fold views auto-saved/restored</li>
+    <li>Clojure indent patterns for HTTP route macros</li>
+    <li>Fennel filetype registration</li>
+  </ul>
+
+  <p><strong>lsp.lua</strong> &mdash; LSP-attach keybinds (definition, references, code actions, rename, format). Configures 6 language servers. Removes default <code>gr*</code> keymaps to keep things clean.</p>
+
+  <p><strong>lazyconfig.lua</strong> &mdash; Bootstraps <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a> from git, auto-imports everything in <code>plugins/</code>. Change detection disabled. Auto-checker enabled (silent).</p>
+
+  <!-- Plugins -->
+  <h3 id="plugins">Plugins</h3>
+
+  <div class="category">Appearance</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">kanagawa.nvim</div>
+      <div class="card-desc">Dark colorscheme. Custom palette: muted yellows/oranges replaced with teal tones. Custom line number highlights.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">lualine.nvim</div>
+      <div class="card-desc">Statusline + buffer tabs. Moon-phase mode indicator. Shows LSP status and filetype icon.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">nvim-notify</div>
+      <div class="card-desc">Pretty notification popups. Replaces <code>vim.notify</code> globally.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">which-key.nvim</div>
+      <div class="card-desc">Keybinding hints popup. Groups organized by prefix. Hides unused z-fold keys.</div>
+    </div>
+  </div>
+
+  <div class="category">Navigation</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">neo-tree.nvim</div>
+      <div class="card-desc">File explorer in floating window. Opens on startup if no args. Shows dotfiles, hides node_modules/.git.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">fzf-lua</div>
+      <div class="card-desc">Fuzzy finder for files, grep, buffers, recent files. Ctrl-j/k navigation, cycling enabled.</div>
+    </div>
+  </div>
+
+  <div class="category">Editing</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">blink.cmp</div>
+      <div class="card-desc">Completion engine. Tab/S-Tab/CR keymap. Sources: buffer, LSP, path, snippets, lazydev.</div>
+      <div class="card-note">LSP source requires 3+ chars. No auto-popup on keyword.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">LuaSnip</div>
+      <div class="card-desc">Snippet engine. Loads VSCode-format snippets from config <code>snippets/</code> dir.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">mini.surround</div>
+      <div class="card-desc">Surround operations (sa/ds/cs). Node-wrapping keymaps for non-Lisp filetypes via localleader.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">multicursor.nvim</div>
+      <div class="card-desc">Visual block &rarr; multicursor. <kbd>I</kbd> to insert, <kbd>A</kbd> to append. Esc clears.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">treesitter + textobjects</div>
+      <div class="card-desc">Syntax highlighting, <code>af</code>/<code>if</code> function textobjects, <code>as</code> scope selection.</div>
+    </div>
+  </div>
+
+  <div class="category">Lisp / REPL</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">conjure</div>
+      <div class="card-desc">REPL client for Clojure, Fennel, Python, Lua, SQL. Manual connect only (auto-repl disabled). Shadow CLJS support with TCP probe.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">nvim-paredit</div>
+      <div class="card-desc">Structural editing for Lisp. Wrap/raise/navigate forms. Clojure-specific log/spy and log/daff wrapping with treesitter-based cleanup.</div>
+    </div>
+  </div>
+
+  <div class="category">Git</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">lazygit.nvim</div>
+      <div class="card-desc">Full LazyGit TUI inside Neovim.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">gitsigns.nvim</div>
+      <div class="card-desc">Git hunk signs in gutter. Stage/unstage/reset hunks. Inline preview. Blame line/buffer. Custom fork with staged sign support.</div>
+      <div class="card-note">Red = unstaged, Green = staged. Obsidian vault buffers excluded.</div>
+    </div>
+  </div>
+
+  <div class="category">Other</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-name">obsidian.nvim</div>
+      <div class="card-desc">Obsidian vault integration. Quick switch, search, daily notes with exercise templates. Custom checkbox rendering.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">csv_hl.nvim</div>
+      <div class="card-desc">CSV syntax highlighting. Local plugin from <code>~/Projects/csv_hl.nvim</code>.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">hex.nvim</div>
+      <div class="card-desc">Hex editor for binary files.</div>
+    </div>
+    <div class="card">
+      <div class="card-name">lazydev.nvim</div>
+      <div class="card-desc">Neovim Lua development helper. Suppresses <code>vim</code> global warnings, provides luv library types.</div>
+    </div>
+  </div>
+
+  <!-- LSP Servers -->
+  <h3 id="lsp-servers">LSP Servers</h3>
+  <table>
+    <tr><th>Language</th><th>Server</th><th>Root Markers</th></tr>
+    <tr><td class="lang">Lua</td><td>lua-language-server</td><td>&mdash;</td></tr>
+    <tr><td class="lang">Ruby</td><td>ruby-lsp</td><td>Gemfile, .git</td></tr>
+    <tr><td class="lang">Clojure</td><td>clojure-lsp</td><td>.git, deps.edn, project.clj</td></tr>
+    <tr><td class="lang">Python</td><td>basedpyright</td><td>pyproject.toml, setup.py, setup.cfg, .git</td></tr>
+    <tr><td class="lang">Go</td><td>gopls</td><td>go.mod, go.work, .git</td></tr>
+    <tr><td class="lang">JS / TS</td><td>typescript-language-server</td><td>tsconfig.json, jsconfig.json, package.json, .git</td></tr>
+  </table>
+  <p>Ruby LSP uses Standard formatter/linter. Clojure LSP sends full documents (no incremental sync). Python uses basic type checking mode.</p>
+
+</main>
+
+</body>
+</html>
