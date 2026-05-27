@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "blog-about-itself",
+    "title": "What is this?",
+    "date": "2026-05-27",
+    "tags": ["web", "meta"],
+    "file": "posts/001-blog-about-itself.md"
+  }
+]
