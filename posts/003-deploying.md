@@ -1,103 +1,123 @@
-Here, I will document how this website went from running locally to something accessible across the WORLD WIDE WEB...
-
-# BEHOLD THESE STEPS
+On the process of getting this page live on internet!
 
 ## Specifications
+
+```markdown
+"What is your website and what does it do?"
+-Arnold Schwarzenegger
+```
 - Static webpage (no database)
 - All javascript dependencies load from external URLs (no npm needed)
+- Absolutely NO React.js (this is my safe space)
 - Github pages for deployment (free, simple)
-- Utilize custom domain name `esciafardini.com` (registered via cloudflare)
+- Utilize custom domain name `esciafardini.com` (registered via Cloudflare)
 - Need to render markdown files via fetch()
   - Required local HTTP server to make this work in dev
   - Does this come for free with Github Pages?
 
-## The Domain Name
-I use cloudflare for purchasing domain names - it's nice because they don't bait & switch you with a higher price after a year of use ☻
+## Buying The Domain Name
+I use Cloudflare for purchasing domain names because they don't bait & switch you with a higher price after one year of use.
 
-## Enabling Github Pages
-I know it's futile to even document the steps here, but this is what *really* happened!!!!
+## Steps To Getting This Page Live
+```markdown
+"If I did it..."
+-O.J. Simpson
+```
+Probably a futile exercise to document the steps here, but this *really* is what I did!!!!
 
-1. Set up a Github repo & push the latest code
-2. Go to settings in Github Repo → then Pages
-3. Set the main branch for deployments
+1. Create a Github repo & push the website's code to it
+2. From settings in Github Repo → navigate to `Pages`
+3. Set the `main` branch for deployments
 
-Shockingly, the page just seems to work here: 
-[OMG Github!!!](https://esciafardini.github.io/esciafardini.com/)
+WHOA! The page just started working at `esciafardini.github.io/esciafardini.com` - Insane, I know. I couldn't believe it myself.
 
 Wow. Simple. Incredible. Okay.
 
-Now to redirect traffic to my registered domain to the github page.
+Next step: point `esciafardini.com` to `esciafardini.github.io/esciafardini.com`
 
-4. Adding a custom domain name to Github Pages?
+```bash
+Q: WHAT DO I WANT?!?!?!
 
-I noted a warning on github:
-```markdown
-Make sure you add your custom domain to your GitHub Pages site 
-BEFORE configuring your custom domain with your DNS provider. 
+A: THE WEBSITE FROM MY GITHUB SERVED AT MY PURCHASED DOMAIN URL
+
+Q: WHEN DO I WANT IT?!?!?!
+
+A: NOW!!!!!
 ```
 
-Sure - but when I added my custom URL to Github Pages...
+I saw a warning on github:
+```markdown
+Make sure you add your custom domain to your GitHub Pages site BEFORE configuring your custom domain with your DNS provider.
+```
 
-Right away, I am getting an error message:
+This brought me to my next step...
+
+4. Add my custom domain name `esciafardini.com` to Github Pages
+
+Sure, okay, but adding my custom domain to Github Pages gave me an error message:
 
 ![ERROR](posts/images/003-github-error.png)
 
-This did however add a CNAME to the github directory. What does it all mean?
+GitHub ran a DNS check on `esciafardini.com` and said "No man, this domain does not resolve to one of our servers. Fix it or continue getting FAILURE messages."
 
-Seems like GitHub ran a DNS check & didn't find anything. It did however make a CNAME in the directory. Interesting...
+Adding the domain name did have a side effect though - there is now a CNAME file in the GitHub repo. Interesting...
 
-5. Consulting these docs: 
-[Managing A Custom Domain for Github Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) 
-(wouldn't be surprised if this link doesn't work in two months - but oh well)
+5. Consult these docs: [Managing A Custom Domain for Github Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
 
-Ok....so it looks like I have to set up these A and CNAME records first?
+Okay, it looks like I have to configure A and CNAME records in Cloudflare first? GitHub's `A` addresses are provided in the documentation linked above. Also need a www CNAME for the website. These can be added to my Cloudflare account it looks like. Mmmm, this feels a little chicken-egg to me, especially considering that warning about "adding your custom domain BEFORE configuring on your DNS provider". Whatever, I will carry on.
 
-The link above tells me which A addresses to add to my cloudflare account I suppose...
+6. Configure `A` and `CNAME` records in Cloudflare
 
-Also need a www CNAME for the website...
+![Cloudflare DNS](posts/images/003-cloudflare-dns-settings.png)
 
-6. Setting A and CNAME records in cloudflare
+Each DNS record is set to "DNS Only" (not Proxy). This means our domain URL points to Github's server (this should address the error we ran into earlier).
 
-In an attempt to resolve this issue, I added the A records along with a CNAME record:
-
-![cloudflare DNS](posts/images/003-cloudflare-dns-settings.png)
-
-Each DNS record is set to "DNS Only" (not Proxy). This means our domain points to Github.
-
-And suddenly - github has deployed my webpage to esciafardini.com
+And it's alive!
 
 ![SUCCESS](posts/images/003-github-success.png)
 
-I think I did things in the right order?
+DNS is configured such that `esciafardini.com` maps to GitHub Pages servers. It works!!!!
 
-Recall github's warning:
+After about 5 minutes, the TLS certificate was provisioned. I was able to "Enforce HTTPS" and so this webpage will only be served via HTTPS!
+
+## Fear-Based Recollection
+I think I did things in the right order? Recalling github's warning:
 ```markdown
-Make sure you add your custom domain to your GitHub Pages site 
-BEFORE configuring your custom domain with your DNS provider. 
+Make sure you add your custom domain to your GitHub Pages site BEFORE configuring your custom domain with your DNS provider.
 ```
 
-I did this. It created a CNAME in the repo but failed. The domain was claimed, but now DNS records were configured in cloudflare. I added the CNAME and A records (per the documentation) and then everything just worked.
+This is that chicken-egg thing I mentioned earlier. I'm still unsure about the whole thing to be honest. I added the domain `esciafardini.com` to GitHub first (just like they told me to) but the DNS check failed. The CNAME was claimed on Github's end (or at least a file was created in the repo - is that the same thing???), but no records were configured yet in Cloudflare. Next, I added the `A` and the `CNAME` records in Cloudflare and everything fell into place.
 
-So for now, I suppose I will have to wait for the TLS certificate to be provisioned....
-
-In the meantime, the website works! (just not via https)
-
-☻ ☻ ☻ ☻ ☻ ☻ ☻ ☻
-
-*Update: after about 5 minutes, TLS cert was provisioned. I was able to enable HTTPS - and so this webpage is accessible via HTTPS!*
-
-## Questions, Answers (soon)
+## Questions, Answers
 
 1. What is a DNS record?
-
+```markdown
+DNS records are instructions on DNS servers. They specify how a domain will work. IP Address information is part of the record.
+```
 2. What does @ mean when setting a DNS record?
+```markdown
+@ refers to the domain: esciafardini.com
+```
+3. What are `A` and `CNAME` records?
+```markdown
+A record specifies "This domain name maps to this IP Address".
+We are mapping esciafardini.com to GitHub's server IP addresses.
 
-3. What do A and CNAME specify?
-
-4. Why are we using DNS-only instead of Poxy in cloudflare?
-
-5. What is TLS certificat provisioning?
-
-6. What is Github doing when it does it's DNS check?
-
+CNAME (www) record specifies esciafardini.com is another name for esciafardini.github.io - so look that up instead.
+```
+4. Why are we using DNS-only instead of Proxy in Cloudflare?
+```markdown
+This way, Cloudflare answers the DNS lookup with GitHub IP addresses. We are using GitHub's servers. We do not want to use Cloudflare's servers.
+```
+5. What is TLS certificate provisioning?
+```markdown
+GitHub automatically requests and installs a TLS certificate (required for HTTPS).
+```
+6. What is Github doing when it does its DNS check?
+```markdown
+This step ensures that the domain has A addresses pointing to GitHub's servers.
+```
 7. Why does serving markdown files "just work" via Github Pages?
+```markdown
+GitHub Pages provides a static server so it's able to handle the fetch requests for the MD files without issue.
+```

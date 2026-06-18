@@ -7,13 +7,6 @@
     "file": "posts/003-deploying.md"
   },
   {
-    "slug": "c-server",
-    "title": "HTTP Server",
-    "date": "2026-06-04",
-    "tags": ["http", "c", "meta"],
-    "file": "posts/002-c-server.md"
-  },
-  {
     "slug": "website-about-itself",
     "title": "Website About Itself",
     "date": "2026-05-27",

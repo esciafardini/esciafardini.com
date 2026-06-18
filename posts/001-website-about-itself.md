@@ -1,10 +1,9 @@
-### Is it possible to retain my skillset in the age of the LLM?
+### Is it possible to actually learn software development in the age of LLMs?
 ```c
-char[] answer = "I hope so?";
+char[] answer = "I think so";
 ```
-### Topics I am going to cover:
-- How this website works
-- Hand rolling a C server to serve these markdown files during local development
+### Topics I plan to cover:
 - Deploying this website
+- Hand rolling a C server to serve these markdown files during local development
 - Side stepping React lifecycle events to implement an @user tagging system
 - Health (as a programmer)
