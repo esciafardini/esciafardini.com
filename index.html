@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myvim</title>
+    <title>ESC</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!-- Syntax-highlighting theme (Tokyo Night — pairs with the Kanagawa palette) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
   </head>
@@ -14,7 +15,8 @@
       <h1>WIP</h1>
       <p class="subtitle">@esciafardini</p>
       <nav>
-        <a href="#blog">Writings</a>
+        <a href="#blog">Posts</a>
+        <a href="#about">About</a>
       </nav>
     </aside>
 
@@ -24,12 +26,11 @@
       <!--  BLOG                                        -->
       <!-- =========================================== -->
 
-      <h3>tags</h3>
       <div class="tag-bar" id="tag-bar"></div>
 
       <!-- List view: tag filters + post list (both populated by the script below) -->
       <div id="blog-list">
-        <ul class="post-list" id="post-list"></ul>
+        <ul class="side-bar" id="side-bar"></ul>
       </div>
 
       <!-- Single-post view (hidden until a post is opened) -->
@@ -38,8 +39,14 @@
         <div class="post-body" id="post-body"></div>
       </article>
 
+      <article id="about" style="display:none;">
+        <div class="about-body" id="about-body"></div>
+      </article>
+
     </main>
 
+    <!-- For security purposes... -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.7/dist/purify.min.js"></script>
     <!-- Markdown parser + syntax highlighter, loaded from CDNs so they aren't code we maintain -->
     <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
