@@ -56,7 +56,7 @@ This brought me to my next step...
 
 Sure, okay, but adding my custom domain to Github Pages gave me an error message:
 
-![ERROR](posts/images/003-github-error.png)
+![ERROR](posts/images/002-github-error.png)
 
 GitHub ran a DNS check on `esciafardini.com` and said "No man, this domain does not resolve to one of our servers. Fix it or continue getting FAILURE messages."
 
@@ -68,13 +68,13 @@ Okay, it looks like I have to configure A and CNAME records in Cloudflare first?
 
 6. Configure `A` and `CNAME` records in Cloudflare
 
-![Cloudflare DNS](posts/images/003-cloudflare-dns-settings.png)
+![Cloudflare DNS](posts/images/002-cloudflare-dns-settings.png)
 
 Each DNS record is set to "DNS Only" (not Proxy). This means our domain URL points to Github's server (this should address the error we ran into earlier).
 
 And it's alive!
 
-![SUCCESS](posts/images/003-github-success.png)
+![SUCCESS](posts/images/002-github-success.png)
 
 DNS is configured such that `esciafardini.com` maps to GitHub Pages servers. It works!!!!
 

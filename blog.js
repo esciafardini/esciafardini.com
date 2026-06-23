@@ -129,12 +129,12 @@ function route() {
   else renderList(null);
 }
 
-// Load the manifest once, then show whatever the current URL asks for.
+// Grab the posts.json file and store it in memory in variable `posts`
 fetch('posts.json')
   .then(r => r.json())
   .then(data => { posts = data.sort(byDateDesc); renderList(null); route(); })
   .catch(() => {
-    console.log('Could not load posts.json — are you serving over http:// rather than opening the file directly?');
+    console.log("Things can happen. Something happened to me. I don't feel good!");
   });
 
 window.addEventListener('hashchange', route);

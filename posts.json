@@ -1,16 +1,23 @@
 [
   {
+    "slug": "http-server-part-1",
+    "title": "Opaque Origins: HTTP Server From Scratch",
+    "date": "2026-06-23",
+    "tags": ["http", "c", "self-referential"],
+    "file": "posts/003-http-server-part-1.md"
+  },
+  {
     "slug": "deploying",
     "title": "Deploying This Website",
     "date": "2026-06-18",
-    "tags": ["web", "meta"],
-    "file": "posts/003-deploying.md"
+    "tags": ["self-referential", "deployment"],
+    "file": "posts/002-deploying.md"
   },
   {
     "slug": "website-about-itself",
     "title": "Website About Itself",
     "date": "2026-05-27",
-    "tags": ["web", "meta"],
+    "tags": ["self-referential"],
     "file": "posts/001-website-about-itself.md"
   }
 ]
