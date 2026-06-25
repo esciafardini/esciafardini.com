@@ -1,5 +1,12 @@
 [
   {
+    "slug": "transducers",
+    "title": "Transducers (in Clojure)",
+    "date": "2026-06-25",
+    "tags": ["clojure"],
+    "file": "posts/004-transducers.md"
+  },
+  {
     "slug": "http-server-part-1",
     "title": "Opaque Origins: HTTP Server From Scratch",
     "date": "2026-06-23",
