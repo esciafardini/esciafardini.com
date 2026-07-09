@@ -1,4 +1,10 @@
-WARNING: This is a somewhat advanced Clojure topic. I'm not going to explain clojure or LISP or functional programming here. This is a selfish blogpost about a topic that trips me up so I can return to it later and solidify my understanding of (deep breath):
+WARNING: This blog post is incomplete & will be updated later...
+
+ANOTHER WARNING: This is a somewhat advanced Clojure topic. I'm not going to explain clojure or LISP or functional programming here. This is a selfish blogpost about a topic that trips me up so I can return to it later and solidify my understanding of (deep breath):
+
+# TED!!!
+Use the fn `some` instead of confusing/verbose set fns with seq and filter with seq. 
+`some` is an all-in-one quick true/false returning sweet functio.
 
 ## Transducers
 
