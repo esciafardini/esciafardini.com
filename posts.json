@@ -1,9 +1,16 @@
 [
   {
+    "slug": "release_me",
+    "title": "I don't care about the death of Software Engineering anymore",
+    "date": "2026-11-03",
+    "tags": ["self-study", "systems-programming"],
+    "file": "posts/009-release_me.md"
+  },
+  {
     "slug": "bartleby",
     "title": "I'd Prefer Not To...",
     "date": "2026-08-05",
-    "tags": [],
+    "tags": ["self-study"],
     "file": "posts/008-bartleby.md"
   },
   {
