@@ -2,23 +2,19 @@
 
 Or at least - it's different.
 
-Out of fear, shamefully, I have clicked on **several** links with *Software Engineering is Dead* being the theme, tagline, or title.
+I have clicked on so many articles with *Software Engineering is Dead* in the title.
 
-I don't care anymore.
-
-I'll say this though: I want nothing to do with rationalist Harry Potter fan fiction and I hope all systems that seek to oppress or control are dismantled.
+I outright refuse to waste my time and energy on this type of content anymore. It's empowering the enemy; the mind killer.
 
 ## Where I'm Going
 - Finish reading `Desiging Data Intensive Applications` and `Release It!`
 - Complete my Silmaril project (a graph representation of the Index to The Silmarillion using Datalog, Datomic, and Clojure)
+- Get a grip on AI Engineering and see if I can make it work for me
 - Learn Systems Programming (for real this time)
-  - Read `Pointers On C`
   - Read `Computer Systems: A Programmer's Perspective`
   - Read `The Linux Programming Interface`
-  - Rewrite my vibecoded Obsidian daily tracker terminal app by hand in C (it's so cool - damn - look at it):
+  - Rewrite my vibecoded Obsidian daily tracker terminal app by hand in C
 ![origin](posts/images/009-terminal.png)
-    - It's kind of nice to just have it working how I want now. Now, my C implementation is stripped of urgency and stress (my two default modes apparently)
-
 
 ## Thanks
 I'd like to get back into posting on here.

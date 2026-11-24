@@ -1,10 +1,6 @@
-[This](https://www.youtube.com/watch?v=IfAtlhpd_3g) is quite literally how I feel about letting Claude write my code for me.
+Writing all my code with Claude? [I'd prefer not to.](https://www.youtube.com/watch?v=IfAtlhpd_3g)
 
-This week I was spoken to for the second time about low token usage. It's a problem apparently. So I must succumb to tokenmaxxing and brain atrophy.
-
-Or must I?
-
-I recently saw two videos that dried my eyes and fixed my mind a little. I'm going to blab about them a little.
+I'm struggling with this new world of software development. Recently, I came across two videos that eased my mind a bit.
 
 # Video 1: "Don't Take The Black Pill"
 [This is the video if you even care.](https://www.youtube.com/watch?v=zLZwpH5lCD4)
