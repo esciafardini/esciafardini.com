@@ -4,7 +4,7 @@ Or at least - it's different.
 
 I have clicked on so many articles with *Software Engineering is Dead* in the title.
 
-I outright refuse to waste my time and energy on this type of content anymore. It's empowering the enemy; the mind killer.
+I refuse to waste my time and energy on this type of content anymore. It's empowering the enemy; the mind killer.
 
 ## Where I'm Going
 - Finish reading `Desiging Data Intensive Applications` and `Release It!`
